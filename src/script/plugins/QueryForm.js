@@ -232,7 +232,9 @@ gxp.plugins.QueryForm = Ext.extend(gxp.plugins.Tool, {
                         }) :
                         filters[0]
                     );
-                }, {
+                },
+                scope: this
+            }, {
                 text: "Download",
                 iconCls: "gxp-icon-event",
                 handler: function () {
