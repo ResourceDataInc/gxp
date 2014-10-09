@@ -239,35 +239,6 @@ gxp.plugins.QueryForm = Ext.extend(gxp.plugins.Tool, {
                 iconCls: "gxp-icon-event",
                 handler: function () {
                     var filters = [];
-
-                    if (queryForm.spatialFieldset.collapsed !== true) {
-                        filters.push(new OpenLayers.Filter.Spatial({
-                            type: OpenLayers.Filter.Spatial.BBOX,
-                            property: featureManager.featureStore.geometryName,
-                            value: this.target.mapPanel.map.getExtent()
-                        }));
-                    }
-                    if (queryForm.attributeFieldset.collapsed !== true) {
-                        var attributeFilter = queryForm.filterBuilder.getFilter();
-                        attributeFilter && filters.push(attributeFilter);
-                    }
-                    var logicalFilter = filters.length > 1 ?
-                        new OpenLayers.Filter.Logical({
-                            type: OpenLayers.Filter.Logical.AND,
-                            filters: filters
-                        }) :
-                        filters[0];
-                    var data = OpenLayers.Format.XML.prototype.write.apply(
-                        this.target.tools.querymanager.hitCountProtocol.format, [this.target.tools.querymanager.hitCountProtocol.format.writeNode("ogc:Filter", logicalFilter)]
-                    );
-                    window.location.href = this.target.tools.querymanager.hitCountProtocol.url + "request=GetFeature&version=" + this.target.tools.querymanager.hitCountProtocol.version + "&typeName=" + this.target.selectedLayer.data.name + "&outputFormat=csv" + "&filter=" + data;
-                },
-                scope: this
-            }, {
-                text: "Download",
-                iconCls: "gxp-icon-event",
-                handler: function () {
-                    var filters = [];
                     if (queryForm.spatialFieldset.collapsed !== true) {
                         filters.push(new OpenLayers.Filter.Spatial({
                             type: OpenLayers.Filter.Spatial.BBOX,
