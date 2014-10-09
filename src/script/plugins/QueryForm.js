@@ -239,6 +239,7 @@ gxp.plugins.QueryForm = Ext.extend(gxp.plugins.Tool, {
                 iconCls: "gxp-icon-event",
                 handler: function () {
                     var filters = [];
+
                     if (queryForm.spatialFieldset.collapsed !== true) {
                         filters.push(new OpenLayers.Filter.Spatial({
                             type: OpenLayers.Filter.Spatial.BBOX,
