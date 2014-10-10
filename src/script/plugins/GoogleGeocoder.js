@@ -79,10 +79,15 @@ gxp.plugins.GoogleGeocoder = Ext.extend(gxp.plugins.Tool, {
     /** private: method[onComboSelect]
      *  Listener for combo's select event.
      */
-    onComboSelect: function(combo, record) {
+    onComboSelect: function (combo, record) {
         if (this.updateField) {
             var map = this.target.mapPanel.map;
             var location = record.get(this.updateField).clone().transform(
+                new OpenLayers.Projection("EPSG:4326"),
+                map.getProjectionObject()
+            );
+            // need to always use the point location in order to have the arrow on the popup box
+            var pointLocation = record.get("location").clone().transform(
                 new OpenLayers.Projection("EPSG:4326"),
                 map.getProjectionObject()
             );
@@ -91,6 +96,15 @@ gxp.plugins.GoogleGeocoder = Ext.extend(gxp.plugins.Tool, {
             } else {
                 map.setCenter(location);
             }
+            var popup = new GeoExt.Popup({
+                title: record.data.address,
+                location: pointLocation,
+                map: map,
+                width: 200,
+                html: "Lat: " + record.data.location.lat + ", Lon: " + record.data.location.lon,
+                collapsible: true
+            });
+            popup.show();
         }
     }
 
