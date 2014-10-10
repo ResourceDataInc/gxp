@@ -162,11 +162,35 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                                 var match = evt.text.match(/<body[^>]*>([\s\S]*)<\/body>/);
                                 if (match && !match[1].match(/^\s*$/)) {
                                     this.displayPopup(evt, title, match[1]);
+                                } else {
+                                    var toProjection = new OpenLayers.Projection("EPSG:4326");
+                                    var position = map.getLonLatFromPixel(evt.xy).transform(map.getProjectionObject(), toProjection);
+                                    var popup = new GeoExt.Popup({
+                                        title: "No features found",
+                                        location: evt.xy,
+                                        map: map,
+                                        html: "Lat: " + position.lat + "<br/> Lon: " + position.lon,
+                                        width: 200,
+                                        collapsible: true
+                                    });
+                                    popup.show();
                                 }
                             } else if (infoFormat == "text/plain") {
                                 this.displayPopup(evt, title, '<pre>' + evt.text + '</pre>');
                             } else if (evt.features && evt.features.length > 0) {
                                 this.displayPopup(evt, title, null,  x.get("getFeatureInfo"));
+                            } else {
+                                var toProjection = new OpenLayers.Projection("EPSG:4326");
+                                var position = map.getLonLatFromPixel(evt.xy).transform(map.getProjectionObject(), toProjection);
+                                var popup = new GeoExt.Popup({
+                                    title: "No features found",
+                                    location: evt.xy,
+                                    map: map,
+                                    html: "Lat: " + position.lat + "<br/> Lon: " + position.lon,
+                                    width: 200,
+                                    collapsible: true
+                                });
+                                popup.show();
                             }
                         },
                         scope: this
