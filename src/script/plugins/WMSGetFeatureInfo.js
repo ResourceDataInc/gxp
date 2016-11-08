@@ -198,7 +198,6 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                     control.activate();
                 }
             }, this);
-
         };
         
         this.target.mapPanel.layers.on("update", updateInfo, this);
@@ -220,11 +219,14 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
         var popupKey = evt.xy.x + "." + evt.xy.y;
         var map = this.target.mapPanel.map;
         var position = map.getLonLatFromPixel(evt.xy).transform(map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+        var initialTitle = "No features found";
+        var initialText = "Lat: " + position.lat + "<br/> Lon: " + position.lon;
         featureinfo = featureinfo || {};
         if (!(popupKey in this.popupCache)) {
             popup = this.addOutput({
                 xtype: "gx_popup",
-                title: this.popupTitle + ": " + position.lat + ", " + position.lon,
+                title: initialTitle,
+                html: initialText,
                 layout: "accordion",
                 fill: false,
                 autoScroll: true,
@@ -276,6 +278,10 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                 title: title,
                 html: text
             }, this.itemConfig));
+        }
+        if (config.length > 0 && popup.title == initialTitle) {
+            popup.setTitle(this.popupTitle);
+            popup.update("");
         }
         popup.add(config);
         popup.doLayout();
