@@ -158,6 +158,7 @@ gxp.plugins.WMSGetFeatureInfo = Ext.extend(gxp.plugins.Tool, {
                     infoFormat = this.format == "html" ? "text/html" : "application/vnd.ogc.gml";
                 }
                 var control = new OpenLayers.Control.WMSGetFeatureInfo(Ext.applyIf({
+                    maxFeatures: 25,
                     url: layer.url,
                     queryVisible: true,
                     layers: [layer],
